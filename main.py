@@ -79,7 +79,7 @@ class Screen1(npyscreen.Form):
 		global rep
 		
 		# Usado para fecha o reprodutor quando fecha o App
-		rep.reproduzir = False
+		rep.reproduzindo = False
 		self.parentApp.setNextForm(None)
 
 
