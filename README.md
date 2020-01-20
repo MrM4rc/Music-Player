@@ -7,16 +7,17 @@
 <p>Primeiro vamos instalar as dependências</p>
 
 ```bash
-	pip install npyscreen
-	pip install pyaudio
-	pip install PyFiFinder
+pip install npyscreen
+pip install pyaudio
+pip install PyFiFinder
 ```
 
 <p>Verifique se as bibliotecas do portaudio estão instaladas corretamente.</p>
 
 <p>Lembre-se de alterar o caminho para a sua home no arquivo reprodutor.py</p>
+
 ```python
-	self.buscador = PyFinder('/caminho/para/home/', ['mp3', 'wav', 'wave'])
+self.buscador = PyFinder('caminho/para/home', ['mp3', 'wav', 'wave'])
 ```
 
 <b>Depois é só executar o arquivo main do projeto</b>
