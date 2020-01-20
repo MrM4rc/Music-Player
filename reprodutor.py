@@ -19,7 +19,7 @@ class Reprodutor():
 		# Guarda o momento em quê a musica esta.
 		self.reproducao_atual = 0
 		# Cria um objeto pyfinder para procurar por musicas no diretorio do usuario
-		self.buscador = PyFinder('/home/user/', ['mp3', 'wav', 'wave'])
+		self.buscador = PyFinder('/caminho/para/home', ['mp3', 'wav', 'wave'])
 		# Diz se o fluxo do pyaudio esta ativo ou não
 		self.fluxo = False
 
