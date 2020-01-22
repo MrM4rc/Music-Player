@@ -24,6 +24,8 @@ class Screen1(npyscreen.Form):
 	Este é um formulario que sera a tela base do nosso app
 	'''
 
+	pausado = True
+
 	def create(self):
 		'''
 		Esta função é chamada quando o formulario é criado
@@ -50,13 +52,26 @@ class Screen1(npyscreen.Form):
 		# Este é um widget que é tipo uma caixa em quê o usuario vai selecionar a musica desejada
 		self.musica = self.add_widget(npyscreen.TitleMultiLine, name='Musicas: ', values=self.selecao, max_height=20)
 		# Um botão usado para reproduzir a musica selecionada
-		self.confirmar = self.add_widget(npyscreen.ButtonPress, name='Reproduzir')
+		self.confirmar = self.add_widget(npyscreen.ButtonPress, name='Reproduzir', relx=50)
 		# Armazena a função que vai ser chamada quando o usuario pressionar o botão
 		self.confirmar.whenPressed = self.reproduzir
+		# Botão para dar pause/play na musica
+		self.pausa_play = self.add_widget(npyscreen.ButtonPress, name='Pausar', relx=70, rely=-16)
+		# Faz um bind para a função pausar_reproduzir
+		# Este botão pausa e continua a reprodução da musica atual
+		self.pausa_play.whenPressed = self.pausar_reproduzir
 
-	def reproduzir(self):
+	def reproduzir(self, continuar=False):
+		''''
+		O parametro continuar diz se é para reproduzir a mesma musica do local onde parou
+		'''
 		
 		global rep
+		
+		# Troca o estado atual da musica
+		if not continuar:
+
+			self.pausado = False
 		
 		# Pega o valor que o usuario selecionou
 		self.musica_selecionada = self.selecao[self.musica.value]
@@ -70,9 +85,38 @@ class Screen1(npyscreen.Form):
 			# Espera o termino da Thread
 			self.t.join()
 		# Inicia uma nova Thread para reproduzir a musica
-		self.t = threading.Thread(target=rep.reproduzir)
+		self.t = threading.Thread(target=rep.reproduzir, args=(continuar,))
 		self.t.start()
 
+
+	def pausar_reproduzir(self):
+
+		global rep
+		
+		# Verifica se a musica esta pausada
+		if self.pausado:
+			
+			# Chama a função para voltar a reproduzir
+			self.reproduzir(True)
+			# Altera o estado da musica
+			self.pausado = False
+			# Alterar o name do botao de pausa/play
+			self.pausa_play.name = 'Pausar'
+			# Atualiza o botão
+			self.pausa_play.update()
+
+		else:
+			
+			# Para a reprodução
+			rep.reproduzindo = False
+			# Espera a Thread terminar
+			self.t.join()
+			# Altera o estado da musica
+			self.pausado = True
+			# Altera o nome do botão pausa/play
+			self.pausa_play.name = 'Play'
+			# Atualiza o botão
+			self.pausa_play.update()
 
 	def afterEditing(self):
 		
