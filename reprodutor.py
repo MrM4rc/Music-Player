@@ -17,7 +17,7 @@ class Reprodutor():
 		# Cria um objeto do tipo PyAudio que vai servir para reproduzir as musicas.
 		self.p = pyaudio.PyAudio()
 		# Guarda o momento em quê a musica esta.
-		self.reproducao_atual = 0
+		self.progresso = 0
 		# Cria um objeto pyfinder para procurar por musicas no diretorio do usuario
 		self.buscador = PyFinder('/caminho/para/home', ['mp3', 'wav', 'wave'])
 		# Diz se o fluxo do pyaudio esta ativo ou não
@@ -35,7 +35,7 @@ class Reprodutor():
 		# Diz se o usuario quer continua a reprodução de onde a outra parou
 		if not continuar_reproducao:
 
-			self.reproducao_atual = 0
+			self.progresso = 0
 		
 		# verifica se ja tem um objeto do tipo fluxo criado
 		if self.fluxo:
@@ -55,13 +55,14 @@ class Reprodutor():
 		try:
 			
 			# Cada 1000 pedaços de um AudioSegment é igual a 1s, então dividimos cada pedaços em 5s para ficar agradavel
-			for frame in self.arquivo[self.reproducao_atual::5000]:
+			for frame in self.arquivo[self.progresso::5000]:
 				# Verifica se é para continuar reproduzindo
 				if self.reproduzindo:
 					# Começa a reproduzir
 					self.fluxo.write(frame.raw_data)
 					# Guarda a quantidade que ja foi reproduzido
-					self.reproducao_atual += 5000
+					self.progresso += 5000
+					self.metodo_customizado((self.progresso / len(self.arquivo)) * 100)
 
 				else:
 
@@ -82,6 +83,10 @@ class Reprodutor():
 		# Inicia a busca por musicas
 		self.buscador.start()
 
+	def metodo_customizado(self):
+
+		pass
+
 	def fechar(self):
 		'''
 		Esta função encerra o reprodutor.
@@ -94,4 +99,3 @@ class Reprodutor():
 				self.reproduzindo = False
 
 		self.p.terminate()
-
