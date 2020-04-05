@@ -8,6 +8,7 @@
 
 ```bash
 pip install npyscreen
+pip install pydub
 pip install pyaudio
 pip install PyFiFinder
 ```
